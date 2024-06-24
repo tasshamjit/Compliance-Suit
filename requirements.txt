@@ -2,3 +2,14 @@ npm i @kinde-oss/kinde-auth-nextjs
 npx shadcn-ui@latest init
 pnpm install lucide-react
 npm install next-themes
+npx shadcn-ui@latest add sheet
+npx shadcn-ui@latest add card
+npx shadcn-ui@latest add input
+npx shadcn-ui@latest add pagination
+npx shadcn-ui@latest add progress
+npx shadcn-ui@latest add separator
+npx shadcn-ui@latest add table
+npx shadcn-ui@latest add tabs
+npx shadcn-ui@latest add tooltip
+npx shadcn-ui@latest add badge
+npx shadcn-ui@latest add breadcrumb
