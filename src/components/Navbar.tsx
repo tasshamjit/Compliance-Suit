@@ -2,6 +2,7 @@ import Link from 'next/link'
 import MaxWidthWrapper from './MaxWidthWrapper'
 import { buttonVariants } from './ui/button'
 import {LoginLink, RegisterLink} from '@kinde-oss/kinde-auth-nextjs/server'
+import { ModeToggle } from './ModeToggle'
 //import { ArrowRight } from 'lucide-react'
 //import UserAccountNav from './UserAccountNav'
 //import MobileNav from './MobileNav'
@@ -22,7 +23,13 @@ const Navbar = () => {
 
 
           <div className='hidden items-center space-x-4 sm:flex'>
-              
+                <Link
+                  href="https://tasshamjit.com/"
+                  className={buttonVariants({
+                    variant: 'ghost',
+                    size: 'sm',})}>
+                  Tass & Hamjit
+                  </Link>
                 <Link
                   href='/pricing'
                   className={buttonVariants({
@@ -43,6 +50,7 @@ const Navbar = () => {
                     size: 'sm',
                   })}>
                   Get started</RegisterLink>
+                  <ModeToggle />
          </div>
         </div>
       </MaxWidthWrapper>

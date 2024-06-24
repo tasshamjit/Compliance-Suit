@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import React from 'react'
+import { ThemeProvider } from "@/components/theme-provider"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,8 +25,15 @@ export default function RootLayout({
           'min-h-screen font-sans antialiased grainy', // Tailwind CSS classes
           inter.className // Inter font class name
         )}>
+         <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
         <Navbar />
         {children}
+        </ThemeProvider>
       </body>
     </html>
   )
