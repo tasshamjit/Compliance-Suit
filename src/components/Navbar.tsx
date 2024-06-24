@@ -1,61 +1,49 @@
-import Link from 'next/link'
-import MaxWidthWrapper from './MaxWidthWrapper'
-import { buttonVariants } from './ui/button'
-import {LoginLink, RegisterLink} from '@kinde-oss/kinde-auth-nextjs/server'
-import { ModeToggle } from './ModeToggle'
-//import { ArrowRight } from 'lucide-react'
-//import UserAccountNav from './UserAccountNav'
-//import MobileNav from './MobileNav'
+import Link from "next/link";
+import { ThemeToggle } from "./Themetoggle";
+import { Button } from "@/components/ui/button";
+import {
+  RegisterLink,
+  LoginLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { UserNav } from "./UserNav";
 
-const Navbar = () => {
-  //const { getUser } = getKindeServerSession()
-  //const user = getUser()
+export async function Navbar() {
+  const { isAuthenticated, getUser } = getKindeServerSession();
+  const user = await getUser();
 
   return (
-    <nav className='sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
-      <MaxWidthWrapper>
-        <div className='flex h-14 items-center justify-between border-b border-gray-200'>
-          <Link
-            href='/'
-            className='flex z-40 font-semibold'>
-            <span>Compliance Suit.</span>
-          </Link>
+    <nav className="border-b bg-background h-14 flex items-center">
+      <div className="container flex items-center justify-between">
+        <Link href="/">
+          <h1 className='flex z-60 font-semibold'>
+            Compliance<span className="text-primary"> Suit</span>
+          </h1>
+        </Link>
+
+        <div className="flex items-center gap-x-5">
 
 
-          <div className='hidden items-center space-x-4 sm:flex'>
-                <Link
-                  href="https://tasshamjit.com/"
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    size: 'sm',})}>
-                  Tass & Hamjit
-                  </Link>
-                <Link
-                  href='/pricing'
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    size: 'sm',
-                  })}>
-                  Pricing
-                </Link>
-                <LoginLink
-                  className={buttonVariants({
-                    variant: 'ghost',
-                    size: 'sm',
-                  })}>
-                  Sign in
-                </LoginLink>
-                <RegisterLink
-                    className={buttonVariants({
-                    size: 'sm',
-                  })}>
-                  Get started</RegisterLink>
-                  <ModeToggle />
-         </div>
+          {(await isAuthenticated()) ? (
+            <UserNav
+              email={user?.email as string}
+              image={user?.picture as string}
+              name={user?.given_name as string}
+            />
+          ) : (
+            <div className="flex items-center gap-x-5">
+              <LoginLink>
+                <Button>Sign In</Button>
+              </LoginLink>
+
+              <RegisterLink>
+                <Button variant="secondary">Get Started</Button>
+              </RegisterLink>
+              <ThemeToggle />
+            </div>
+          )}
         </div>
-      </MaxWidthWrapper>
+      </div>
     </nav>
-  )
+  );
 }
-
-export default Navbar
