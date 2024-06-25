@@ -76,9 +76,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { TooltipProvider } from "@radix-ui/react-tooltip"
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 
-export function Dashboard() {
+export async function Dashboard() {
+  const { getUser } =getKindeServerSession();
+  const user = await getUser();
+    if(!user){
+      return redirect('/')
+    } 
   return (
     
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
