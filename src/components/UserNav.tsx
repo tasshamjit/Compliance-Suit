@@ -13,6 +13,7 @@ import { CreditCard, DoorClosed, Home, Settings } from "lucide-react";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
 import Link from "next/link";
+import { ThemeToggle } from "./Themetoggle";
 
 export const navItems = [
   { name: "Home", href: "/dashboard", icon: Home },
@@ -31,6 +32,9 @@ export function UserNav({
 }) {
     const firstLetter = name ? name.charAt(0).toUpperCase() : '';
   return (
+    <div className="flex items-center space-x-4">
+      {/* ThemeToggle component in the navbar */}
+      <ThemeToggle />
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -80,5 +84,6 @@ export function UserNav({
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
+  </div>
   );
 }
