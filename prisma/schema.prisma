@@ -18,3 +18,17 @@ model User {
   stripeCustomerId String?       @unique
   colorScheme      String        @default("theme-orange")
 }
+
+model Alert {
+  id             String       @id @default(uuid())
+  title          String
+  description    String
+  fullDescription String      @default("change it")// Add this field
+  variant        AlertVariant
+  createdAt      DateTime     @default(now())
+}
+
+enum AlertVariant {
+  DEFAULT
+  DESTRUCTIVE
+}
