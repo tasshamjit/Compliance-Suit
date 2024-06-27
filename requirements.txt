@@ -25,3 +25,9 @@ if any error try removing  prisma by
 pnpm remove prisma @prisma/client  (also delete the prisma folder) and reinstall again from line 18 (also delete the prisma folder)
 
 pnpm install swr
+pnpm install @reach/dialog
+
+npx shadcn-ui@latest add accordion
+
+npx shadcn-ui@latest add badge button drawer drawercontent drawerdescription drawerheader drawertitle drawertrigger input label select selectcontent selectitem selecttrigger selectvalue textarea tooltip tooltipcontent tooltiptrigger
+ 

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   Book,
@@ -372,17 +372,15 @@ export function Dashboard() {
             </form>
           </div>
           <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
-            <Badge variant="outline" className="absolute right-3 top-3">
-              Output
-            </Badge>
+
             <div className="flex-1 overflow-auto">
               {messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`p-2 my-1 rounded-md ${
+                  className={`p-2 my-1 rounded-md max-w-[100%] ${
                     msg.role === "user"
-                      ? "bg-blue-200 self-end"
-                      : "bg-gray-200 self-start"
+                      ? "self-end text-right "
+                      : "self-start text-left "
                   }`}
                 >
                   {msg.content}
