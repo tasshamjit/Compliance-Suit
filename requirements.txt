@@ -24,3 +24,4 @@ npx prisma db push  # to push the schema to the database
 if any error try removing  prisma by
 pnpm remove prisma @prisma/client  (also delete the prisma folder) and reinstall again from line 18 (also delete the prisma folder)
 
+pnpm install swr
