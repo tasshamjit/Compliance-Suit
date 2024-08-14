@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import React, { useState, ChangeEvent } from 'react';
 import axios from 'axios';
-import { Button } from '@/components/ui/button'; // Ensure your path is correct
+import { Button } from '@/components/ui/button'; 
 
 
 const categories = ["Asset", "Liability", "Expenses", "Income", "Equity"];
