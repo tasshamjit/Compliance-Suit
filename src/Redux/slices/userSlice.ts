@@ -4,6 +4,8 @@ import { BaseAuthRequest, LoginResponse, RegisterResponse } from '@/types/userTy
 import api from '@/services/axios';
 import { UserState } from '@/types/userType';
 import { RootState } from '../store';
+import NotificationsSystem, {atalhoTheme, dismissNotification} from 'reapop'
+
 
 const initialState : UserState ={
     is_authenticated:false,
@@ -37,11 +39,12 @@ export const registerUser = createAsyncThunk(
                 return{success:true}
             }
             return response.data
-        } catch (error){
+        } catch (error:any){
             // if (error instanceof Error){
             //     throw new Error(error.message || 'Registration failed');
             // }
-            return rejectWithValue({success:false})
+            if (error.response && error.response.status === 400 && error.response.data.detail == "Email already registered")
+            return rejectWithValue({success:false,message:"Email already registered"})
         }
     });
 
