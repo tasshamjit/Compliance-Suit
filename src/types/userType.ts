@@ -18,6 +18,10 @@ export interface User {
     token: string;
 }
 
+export interface RegisterResponse {
+    status: string
+}
+
 export interface UserState {
     is_authenticated: boolean,
     user: User | null

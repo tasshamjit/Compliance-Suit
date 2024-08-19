@@ -3,7 +3,6 @@ import React, { useState, ChangeEvent } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button'; 
 
-
 const categories = ["Asset", "Liability", "Expenses", "Income", "Equity"];
 
 interface ClassificationResult {
@@ -64,6 +63,17 @@ const UploadPage: React.FC = () => {
     return (
         <div className="upload-page bg-card p-6 shadow-md rounded-lg">
             <h1 className="text-lg font-bold mb-4">Upload Trial Balance</h1>
+            
+            <div className="mb-4">
+                <a 
+                    href="/Book2.xlsx" 
+                    download 
+                    className="text-blue-500 hover:underline"
+                >
+                    Download Example File
+                </a>
+            </div>
+
             <input type="file" onChange={handleFileChange} className="file-input mb-4" />
             <div className="flex space-x-4">
                 <Button onClick={handleUpload} disabled={isLoading} variant={isLoading ? 'destructive' : 'default'}>

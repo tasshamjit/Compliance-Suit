@@ -1,8 +1,9 @@
 "use client";
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit' ;
-import { BaseAuthRequest, LoginResponse } from '@/types/userType';
+import { createAsyncThunk, createSlice, isRejectedWithValue, PayloadAction } from '@reduxjs/toolkit' ;
+import { BaseAuthRequest, LoginResponse, RegisterResponse } from '@/types/userType';
 import api from '@/services/axios';
 import { UserState } from '@/types/userType';
+import { RootState } from '../store';
 
 const initialState : UserState ={
     is_authenticated:false,
@@ -26,16 +27,21 @@ export const loginUser = createAsyncThunk<LoginResponse, BaseAuthRequest>(
     });
 
 
-  export const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk(
     'user/registerUser' ,
-    async (userCredentials : BaseAuthRequest) => {
+    async (userCredentials : BaseAuthRequest,{ rejectWithValue }) => {
         try {
-            const response  = await api.post('/register', userCredentials);
-            return response.data
-        } catch (error:unknown){
-            if (error instanceof Error){
-                throw new Error(error.message || 'Registration failed');
+            console.log("User registration is happening here..")
+            const response  = await api.post('/api/user/register', userCredentials);
+            if (response.status == 200){
+                return{success:true}
             }
+            return response.data
+        } catch (error){
+            // if (error instanceof Error){
+            //     throw new Error(error.message || 'Registration failed');
+            // }
+            return rejectWithValue({success:false})
         }
     });
 
@@ -66,7 +72,22 @@ export const loginUser = createAsyncThunk<LoginResponse, BaseAuthRequest>(
             state.error = action.error.message || 'Log in failed'
         })
 
+        
+        builder
+        .addCase(registerUser.pending, (state) => {
+            state.loading = true;
+            
+        })
+        .addCase(registerUser.fulfilled, (state,action: PayloadAction<RegisterResponse>) => {
+            state.loading = false;
+        })
+        .addCase(registerUser.rejected, (state, action ) =>{
+            state.loading = false;
+            state.error = action.error.message || 'registration in failed'
+        })
     }
 })
+
+export const selectLoading = (state: RootState) => state.user.loading; 
 
 export default userSlice.reducer

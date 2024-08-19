@@ -9,13 +9,20 @@ import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
 import {Form, useFormik} from 'formik'
+import  {ProgressBar} from 'react-loader-spinner'
+import  {Oval} from 'react-loader-spinner'
 import validationSchema from "@/schemas/registrationSchmea";
+import { selectLoading } from "@/Redux/slices/userSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useRouter } from 'next/navigation';
 
 const RegisterPage:React.FC = () => {
 
-  // const dispatch = useDispatch<Appdispatch>();
-  // const { error } = useSelector((state: RootState) => state.user);
-
+  const dispatch = useDispatch<Appdispatch>();
+  const { error } = useSelector((state: RootState) => state.user);
+  const loading = useSelector(selectLoading)
+  const [isMounted,setIsMounted] = useState(false)
+  const router = useRouter()
   interface FormValues {
     email: string,
     password: string
@@ -27,11 +34,21 @@ const RegisterPage:React.FC = () => {
       password: '',
     },
     validationSchema:validationSchema,
-    onSubmit: (values) => {
-      // dispatch(registerUser(values))
-      console.log(values)
-    }
-  })
+    onSubmit: async (values) => {
+      try {
+        console.log("registsering user is here")
+        const result = await dispatch(registerUser(values)).unwrap();
+        if (result.success) {
+          router.push('/register/successPage')
+        }
+        router.push('/register/successPage')
+
+
+      } catch (error) {
+        console.log("this is the error",error)
+      }
+    } })
+  
 
   return (
     <>
@@ -46,7 +63,10 @@ const RegisterPage:React.FC = () => {
           {formik.touched.password && formik.errors.password ? (
           <div className="text-red-500 text-sm">{formik.errors.password}</div>
         ) : null}
-          <Button type="submit">Sign up</Button>
+        {loading?
+        <Button variant="ghost"><Oval height={30} width={30} color="#FFFFFF" secondaryColor=''/></Button>
+        :
+          <Button type="submit">Sign up</Button>}
           <div className="flex justify-around">
             <Link href='/signin' passHref>
             <Button variant="link" className="text-blue-500">{'click here to sign in'}</Button>
