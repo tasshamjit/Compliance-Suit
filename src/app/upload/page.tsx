@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button'; 
+import {jwtDecode} from 'jwt-decode';
 
 const categories = ["Asset", "Liability", "Expenses", "Income", "Equity"];
 
@@ -16,6 +17,24 @@ const UploadPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [userId, setUserId] = useState<string | null>(null);
+
+    useEffect(() => {
+        // Retrieve the token from localStorage and decode it
+        console.log('use effect is working');
+        const token = localStorage.getItem('access');
+        if (token) {
+            try {
+                const decodedToken: any = jwtDecode(token);
+                console.log('Decoded token:', decodedToken);
+                setUserId(decodedToken.sub); // Set the userId in state
+            } catch (error) {
+                console.error('Failed to decode token:', error);
+            }
+        } else {
+            console.log('No token found');
+        }
+    }, []);
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -31,17 +50,25 @@ const UploadPage: React.FC = () => {
         setIsLoading(true);
         const formData = new FormData();
         formData.append('file', file);
-
+        
         try {
-            const response = await axios.post('http://localhost:8000/classify_ledgers', formData, {
+            const response = await axios.post(`http://localhost:8000/classify_ledgers?user_id=${userId || ''}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
+                    // 'user_id': userId || '', // Ensure user_id is a string
                 },
             });
-            setResults(response.data);
+            // Check if the response data is in the expected format
+            if (Array.isArray(response.data)) {
+                setResults(response.data);
+            } else {
+                throw new Error('Unexpected response format');
+            }
             setError(null);
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Something went wrong!');
+            // Ensure error message is a string
+            const errorMessage = err.response?.data?.detail || 'Something went wrong!';
+            setError(typeof errorMessage === 'string' ? errorMessage : 'Unknown error');
         } finally {
             setIsLoading(false);
         }
@@ -90,7 +117,7 @@ const UploadPage: React.FC = () => {
                     <ul className="list-none">
                         {results.map((item, index) => (
                             <li key={index} className="bg-background p-2 rounded-md mb-1">
-                                {item.ledger_name}: 
+                                {item.ledger_name}:
                                 {isEditing ? (
                                     <select 
                                         value={item.classification}

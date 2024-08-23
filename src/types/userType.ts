@@ -28,3 +28,11 @@ export interface UserState {
     loading: boolean,
     error: string | null;
 }
+
+export interface Users {
+    id: number,
+    email: string,
+    is_active: boolean,
+    is_blocked: boolean
+
+}

@@ -20,7 +20,6 @@ const RegisterPage: React.FC = () => {
   const dispatch = useDispatch<Appdispatch>();
   const { error } = useSelector((state: RootState) => state.user);
   const loading = useSelector(selectLoading);
-  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   interface FormValues {
     email: string;

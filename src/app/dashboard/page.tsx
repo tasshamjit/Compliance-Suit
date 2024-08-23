@@ -119,18 +119,18 @@ async function getData({
 }
 
 export async function Dashboard() {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  if (!user) {
-    return redirect('/')
-  }
-  await getData({
-    email: user.email as string,
-    firstName: user.given_name as string,
-    id: user.id as string,
-    lastName: user.family_name as string,
-    profileImage: user.picture,
-  });
+  // const { getUser } = getKindeServerSession();
+  // const user = await getUser();
+  // if (!user) {
+  //   return redirect('/')
+  // }
+  // await getData({
+  //   email: user.email as string,
+  //   firstName: user.given_name as string,
+  //   id: user.id as string,
+  //   lastName: user.family_name as string,
+  //   profileImage: user.picture,
+  // });
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
