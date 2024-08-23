@@ -33,12 +33,11 @@ const Page = () => {
       if (response) {
         console.log(response);
         const sortingUser = response.data.sort((a:any, b:any) => a.id - b.id)
-        // const sortedUsers = Object.fromEntries(sortingUsers);
         SetUsers(sortingUser);
       }
     };
     fetchUsers();
-  });
+  },[]);
 
   const handleBlockStatus = async (user_id: number, status: boolean) => {
     console.log(user_id, "user_id", status, "status");
