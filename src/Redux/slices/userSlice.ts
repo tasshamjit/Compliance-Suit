@@ -71,6 +71,7 @@ export const blockUser = createAsyncThunk(
             const response = await api.patch('/api/user/block-user', null,{
                 params: {user_id, status}
             })
+            return response
             console.log(response, '')
         }
         catch(error:any){

@@ -43,10 +43,18 @@ const Page = () => {
     console.log(user_id, "user_id", status, "status");
     try {
       const response = await dispatch(blockUser({ user_id, status })).unwrap();
+      if (response) {
+        SetUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === user_id ? { ...user, is_blocked: status } : user
+          )
+        );
+      }
     } catch (error) {
       console.error("Error blocking/unblocking user:", error);
     }
   };
+  
 
   return (
     <div className="px-10">
