@@ -1,16 +1,39 @@
+"use client";
 import Link from "next/link";
 import { ThemeToggle } from "./Themetoggle";
 import { Button } from "@/components/ui/button";
-import {
-  RegisterLink,
-  LoginLink,
-} from "@kinde-oss/kinde-auth-nextjs/components";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { UserNav } from "./UserNav";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/Redux/store";
+import { useRouter } from "next/navigation";
+import { logout } from "@/Redux/slices/userSlice";
+import { confirmAlert } from "react-confirm-alert";
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export async function Navbar() {
-  const { isAuthenticated, getUser } = getKindeServerSession();
-  const user = await getUser();
+export default function Navbar() {
+  const router = useRouter();
+  const isAuthenticated = useSelector((state: RootState) => state.user.is_authenticated);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    confirmAlert({
+      title: 'Confirm to logout',
+      message: 'Are you sure you want to log out?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            dispatch(logout()); 
+            router.push('/');
+          }
+        },
+        {
+          label: 'No,go back',
+          onClick: () => {
+          }
+        }
+      ]
+    });
+  };
 
   return (
     <nav className="border-b bg-background h-14 flex items-center">
@@ -22,23 +45,16 @@ export async function Navbar() {
         </Link>
 
         <div className="flex items-center gap-x-5">
-
-
-          {(await isAuthenticated()) ? (
-            <UserNav
-              email={user?.email as string}
-              image={user?.picture as string}
-              name={user?.given_name as string}
-            />
+          {isAuthenticated ? (
+            <Button onClick={handleLogout}>Log out</Button>
           ) : (
             <div className="flex items-center gap-x-5">
-              <LoginLink>
+              <Link href='/signin'>
                 <Button>Sign In</Button>
-              </LoginLink>
-
-              <RegisterLink>
+              </Link>
+              <Link href='/register'>
                 <Button variant="secondary">Get Started</Button>
-              </RegisterLink>
+              </Link>
               <ThemeToggle />
             </div>
           )}

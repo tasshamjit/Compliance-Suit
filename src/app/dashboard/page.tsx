@@ -78,60 +78,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { TooltipProvider } from "@radix-ui/react-tooltip"
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { redirect } from "next/navigation";
-import prisma from "@/lib/db";
-import AlertsDashboard from '@/components/ui/AlertsDashboard'; // Import the AlertsDashboard component
 
-async function getData({
-  email,
-  id,
-  firstName,
-  lastName,
-  profileImage,
-}: {
-  email: string;
-  id: string;
-  firstName: string | undefined | null;
-  lastName: string | undefined | null;
-  profileImage: string | undefined | null;
-}) {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: id,
-    },
-    select: {
-      id: true,
-      stripeCustomerId: true,
-    },
-  });
-
-  if (!user) {
-    const name = `${firstName ?? ""} ${lastName ?? ""}`;
-    await prisma.user.create({
-      data: {
-        id: id,
-        email: email,
-        name: name,
-      },
-    });
-  }
-}
-
-export async function Dashboard() {
-  // const { getUser } = getKindeServerSession();
-  // const user = await getUser();
-  // if (!user) {
-  //   return redirect('/')
-  // }
-  // await getData({
-  //   email: user.email as string,
-  //   firstName: user.given_name as string,
-  //   id: user.id as string,
-  //   lastName: user.family_name as string,
-  //   profileImage: user.picture,
-  // });
-
+export function Dashboard() {
+ 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -529,7 +478,7 @@ export async function Dashboard() {
           <div>
             <Card><CardHeader><CardTitle>News</CardTitle></CardHeader>
             <CardContent>
-              <AlertsDashboard /> {/* Inserted AlertsDashboard here */}
+              <div>alerts</div>
             </CardContent>
             </Card>
           </div>

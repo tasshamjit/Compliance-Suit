@@ -72,7 +72,6 @@ export const blockUser = createAsyncThunk(
                 params: {user_id, status}
             })
             return response
-            console.log(response, '')
         }
         catch(error:any){
             return rejectWithValue(error.response?.data?.detail || 'an error occured while editing')
@@ -125,3 +124,4 @@ export const blockUser = createAsyncThunk(
 export const selectLoading = (state: RootState) => state.user.loading; 
 
 export default userSlice.reducer
+export const {logout} = userSlice.actions;
