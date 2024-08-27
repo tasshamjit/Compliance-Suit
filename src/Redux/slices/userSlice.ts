@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice, isRejectedWithValue, PayloadAction } from '@reduxjs/toolkit' ;
 import { BaseAuthRequest, LoginResponse, RegisterResponse } from '@/types/userType';
 import api from '@/services/axios';
+import axios,{ AxiosError } from 'axios';
 import { UserState } from '@/types/userType';
 import { RootState } from '../store';
 
@@ -15,7 +16,7 @@ const initialState : UserState ={
 
 export const loginUser = createAsyncThunk<LoginResponse, BaseAuthRequest>(
     'user/loginUser',
-    async (userCredentials: BaseAuthRequest) => {
+    async (userCredentials: BaseAuthRequest, {rejectWithValue}) => {
       try {
         const response = await api.post('/api/user/login', userCredentials);
         localStorage.setItem('refresh',response.data.refresh_token)
@@ -23,9 +24,20 @@ export const loginUser = createAsyncThunk<LoginResponse, BaseAuthRequest>(
         console.log(response.data)
         return response.data;
       } catch (error:unknown) {
-        if (error instanceof Error){
-            throw new Error(error.message || 'Login failed');
+        if (axios.isAxiosError(error)){
+            
+            if(error.response && error.response.data && error.response.data.detail){
+                
+                return rejectWithValue(error.response.data.detail)
+            } else {
+                return rejectWithValue(error.message || 'Log in failed')
+            }
+        } else if(error instanceof Error) {
+            
+            return rejectWithValue(error.message || 'Log in failed')
         }
+
+        return rejectWithValue('Log in failed')
       }
     });
 
@@ -87,7 +99,16 @@ export const blockUser = createAsyncThunk(
         logout(state){            
             state.user = null ;
             state.is_authenticated = false ;
+            state.error = null;
+            localStorage.removeItem('access')
+            localStorage.removeItem('refresh')
         },
+
+        clearError(state){
+            console.log('before clearning error2', state.error)
+            state.error=null
+            console.log('after clearning error2', state.error)
+        }
     },
 
     extraReducers: (builder) => {
@@ -102,7 +123,14 @@ export const blockUser = createAsyncThunk(
         })
         .addCase(loginUser.rejected, (state, action ) =>{
             state.loading = false;
-            state.error = action.error.message || 'Log in failed'
+            console.log(action)
+            if (action.payload){
+                state.error = action.payload
+            }
+        
+            console.log(state.error,'this is the error which is happening here');
+            // toast(state.error);
+        
         })
 
         
@@ -125,3 +153,4 @@ export const selectLoading = (state: RootState) => state.user.loading;
 
 export default userSlice.reducer
 export const {logout} = userSlice.actions;
+export const {clearError} = userSlice.actions;
