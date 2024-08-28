@@ -5,16 +5,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
 const Page = () => {
-  // State to ensure client-side rendering
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Set the state to true after component mounts
     setIsClient(true);
   }, []);
 
   if (!isClient) {
-    // Render nothing or a placeholder on the server side
     return null;
   }
 
