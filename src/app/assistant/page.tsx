@@ -35,6 +35,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import { Select as ChakraSelect } from "@chakra-ui/react";
+
 import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
@@ -42,38 +45,65 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Loader from "..//../components/loader/loader";
+import api from "@/services/axios";
+import { jwtDecode } from "jwt-decode";
+import { SelectGroup } from "@radix-ui/react-select";
 
 interface Message {
-  role: "user" | "assistant";
+  // role: "user" | "assistant";
   content: string;
+  response: string;
 }
 
 export function Dashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [option, setOption] = useState("zaid");
+  const [loading, setLoading] = useState(false);
 
+  const handleValueChange = (value: string) => {
+    console.log("entering");
+    setOption(value);
+    console.log("Selected law:", value); // Debugging purposes
+    // Here you can update more states or trigger additional actions based on the selection
+  };
+  // const handleValueChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const selectedValue = event.target.value;
+  //   console.log("Selected law:", selectedValue); // For debugging
+  //   setOption(selectedValue);
+  // };
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     event.preventDefault();
-    const userMessage: Message = { role: "user", content: input };
+    const userMessage: Message = { content: input, response: "" };
     setMessages([...messages, userMessage]);
-    setInput("");
+    console.log(messages);
 
-    // Call the ChatGPT API
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+    const token: string = localStorage.getItem("access") || "";
+    const decoded_token = jwtDecode<{ sub: number }>(token);
+
+    console.log(decoded_token, "decoded token is here");
+
+    const response = await api.get("api/assistant", {
+      params: {
+        query: input,
+        sender: decoded_token.sub,
+        option: option,
       },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [...messages, userMessage],
-      }),
     });
-
-    const data = await response.json();
-    const assistantMessage: Message = data.choices[0].message;
-    setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+    setInput("");
+    console.log(response, "this is just response only");
+    console.log(response.data, "this is the exact response ");
+    setMessages((prevMessages) =>
+      prevMessages.map((message, index) =>
+        index === prevMessages.length - 1
+          ? { ...message, response: response.data }
+          : message
+      )
+    );
+    console.log(messages, "messages");
+    setLoading(false);
   };
 
   return (
@@ -85,7 +115,7 @@ export function Dashboard() {
               <Triangle className="size-5 fill-foreground" />
             </Button>
           </div>
-          <nav className="grid gap-1 p-2">
+          {/* <nav className="grid gap-1 p-2">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -171,7 +201,7 @@ export function Dashboard() {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-          </nav>
+          </nav> */}
           <nav className="mt-auto grid gap-1 p-2">
             <TooltipProvider>
               <Tooltip>
@@ -218,6 +248,7 @@ export function Dashboard() {
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Settings className="size-4" />
                 <span className="sr-only">Settings</span>
+                
               </Button>
             </DrawerTrigger>
             <DrawerContent className="max-h-[80vh]">
@@ -239,7 +270,7 @@ export function Dashboard() {
                         id="country"
                         className="items-start [&_[data-description]]:hidden"
                       >
-                        <SelectValue placeholder="Select a country" />
+                        <SelectValue placeholder="Select another country" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="saudi-arabia">
@@ -253,17 +284,17 @@ export function Dashboard() {
                   </div>
                   <div className="grid gap-3">
                     <Label htmlFor="law">Law</Label>
-                    <Select>
-                      <SelectTrigger
-                        id="law"
-                        className="items-start [&_[data-description]]:hidden"
-                      >
-                        <SelectValue placeholder="Select a law" />
+
+                    <Select onValueChange={setOption}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an option" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="vat">VAT</SelectItem>
-                        <SelectItem value="labour">Labour</SelectItem>
-                        <SelectItem value="ct">CT</SelectItem>
+                        <SelectItem value="vat">Option 1</SelectItem>
+                        <SelectItem value="ct">Option 2</SelectItem>
+                        <SelectItem value="interact with zaid">
+                          Zaid 3
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -287,7 +318,7 @@ export function Dashboard() {
                   </div>
                   <div className="grid gap-3">
                     <Label htmlFor="content">Content</Label>
-                    <Textarea id="content" placeholder="You are a..." />
+                    <Textarea id="content" placeholder="You are a a..." />
                   </div>
                 </fieldset>
               </form>
@@ -337,7 +368,7 @@ export function Dashboard() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="vat">VAT</SelectItem>
-                      <SelectItem value="labour">Labour</SelectItem>
+                      <SelectItem value="zaid">Interact with Zaid</SelectItem>
                       <SelectItem value="ct">CT</SelectItem>
                     </SelectContent>
                   </Select>
@@ -370,20 +401,35 @@ export function Dashboard() {
                 </div>
               </fieldset>
             </form>
+            <div>
+              <p className="">
+                Ask any financial related doubts to cmple ai your go to
+                financial AI.
+              </p>
+            </div>
           </div>
           <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">
-
             <div className="flex-1 overflow-auto">
               {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`p-2 my-1 rounded-md max-w-[100%] ${
-                    msg.role === "user"
-                      ? "self-end text-right "
-                      : "self-start text-left "
-                  }`}
-                >
-                  {msg.content}
+                <div>
+                  <div
+                    key={index}
+                    className={`p-2 my-1 rounded-md w-fit self-center text-right bg-slate-700`}
+                  >
+                    {msg.content}
+                  </div>
+                  {msg.response == "" ? (
+                    <>
+                      <Loader />
+                    </>
+                  ) : (
+                    <div
+                      key={index}
+                      className={`p-2 my-1 rounded-md w-fit self-start text-left bg-blue-400 mb-6`}
+                    >
+                      {msg.response}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
