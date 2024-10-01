@@ -174,7 +174,7 @@ const UploadPage: React.FC = () => {
             console.log('entering in to the userEffect')
             const token: string = localStorage.getItem("access") || "";
             const decoded_token = jwtDecode<{ sub: number }>(token);
-            console.log(decoded_token.sub)
+            console.log(decoded_token.sub,'this is the user id')
             try {
               const response = await api.get("/api/user/get-user-business-data", {params:{user_id:decoded_token.sub}} ); // API call to get user business data
               console.log(response)
@@ -207,9 +207,12 @@ const UploadPage: React.FC = () => {
         setIsLoading(true);
         const formData = new FormData();
         formData.append('file', file);
+
+        const token: string = localStorage.getItem("access") || "";
+        const decoded_token = jwtDecode<{ sub: number }>(token);
         
         try {
-            const response = await axios.post(`http://localhost:8000/classify_ledgers?user_id=${userId || ''}`, formData, {
+            const response = await axios.post(`http://localhost:8000/classify_ledgers?user_id=${decoded_token.sub || ''}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
