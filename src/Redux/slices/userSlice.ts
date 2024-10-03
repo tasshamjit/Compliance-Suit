@@ -123,11 +123,13 @@ export const updateUserBusiness = createAsyncThunk(
       is_mainland,
       is_freezone,
       separate_books_for_mainland_and_freezone,
+      sector
     }: {
       user_id: number;
       is_mainland: boolean | null;
       is_freezone: boolean | null;
       separate_books_for_mainland_and_freezone: boolean | null;
+      sector : String;
     },
     { rejectWithValue }
   ) => {
@@ -137,6 +139,7 @@ export const updateUserBusiness = createAsyncThunk(
       params : {user_id,
         is_mainland,
         is_freezone,
+        sector,
         separate_books_for_mainland_and_freezone}
       });
       return response.data;

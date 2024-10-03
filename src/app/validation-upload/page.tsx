@@ -13,6 +13,15 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 
@@ -28,13 +37,12 @@ const ValidationPage: React.FC = () => {
   });
 
   const dispatch = useDispatch<Appdispatch>();
-  const router = useRouter()
-
+  const router = useRouter();
+  const [sector,setSector] = useState('')
   const [error, setError] = useState<string | null>(null);
-  const [isLoading,setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(true);
 
-  // Function to handle the selection of is_mainland
   const handleMainlandSelection = (value: boolean) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -50,7 +58,6 @@ const ValidationPage: React.FC = () => {
       is_freezone: value,
     }));
     setError(null);
-    
   };
 
   // Function to handle separate books selection
@@ -63,41 +70,44 @@ const ValidationPage: React.FC = () => {
 
   // Handle form submission
   const handleSubmit = () => {
+    console.log(sector)
     if (formData.is_mainland === false && formData.is_freezone === false) {
       setError(
         "There should be at least business in either mainland or freezone."
       );
-    } else if(formData.is_mainland === true && formData.is_freezone === true && formData.separate_books_for_mainland_and_freezone === false){
-        setError("There should be separate books for each zone")
-    }
-     else {
+    } else if (
+      formData.is_mainland === true &&
+      formData.is_freezone === true &&
+      formData.separate_books_for_mainland_and_freezone === false
+    ) {
+      setError("There should be separate books for each zone");
+    } else {
       setError(null);
       // Add submission logic here
       const token: string = localStorage.getItem("access") || "";
       const decoded_token = jwtDecode<{ sub: number }>(token);
-      setIsLoading(true)
+      setIsLoading(true);
       dispatch(
         updateUserBusiness({
           user_id: decoded_token.sub,
           is_mainland: formData.is_mainland,
           is_freezone: formData.is_freezone,
           separate_books_for_mainland_and_freezone:
-            formData.separate_books_for_mainland_and_freezone,
+          formData.separate_books_for_mainland_and_freezone,
+          sector:sector
         })
       ).then(() => {
-        setIsLoading(false)
-        router.push('/upload');
+        setIsLoading(false);
+        router.push("/upload");
       });
-      setIsLoading(false)
+      setIsLoading(false);
       console.log("Form data submitted:", formData);
     }
   };
 
   return (
     <div className="validation-page">
-      <Dialog
-        open={true}
-          >
+      <Dialog open={true}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Business Information</DialogTitle>
@@ -111,12 +121,42 @@ const ValidationPage: React.FC = () => {
             </p>
           )}
 
-            {formData.is_mainland === true && formData.is_freezone === true && formData.separate_books_for_mainland_and_freezone === false &&(
-                <p className="text-red-500">
-              There should be separate books for each zone
-             </p>
-             )}
-          {/* Question 1: Business in mainland */}
+          {formData.is_mainland === true &&
+            formData.is_freezone === true &&
+            formData.separate_books_for_mainland_and_freezone === false && (
+              <p className="text-red-500">
+                There should be separate books for each zone
+              </p>
+            )}
+          <Select onValueChange={setSector}>
+            <SelectTrigger className="my-4" >
+              <SelectValue placeholder="which sector does your business belongs to?" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="technology">Technology</SelectItem>
+              <SelectItem value="healthcare">Healthcare</SelectItem>
+              <SelectItem value="finance">Finance</SelectItem>
+              <SelectItem value="retail">Retail</SelectItem>
+              <SelectItem value="manufacturing">Manufacturing</SelectItem>
+              <SelectItem value="education">Education</SelectItem>
+              <SelectItem value="hospitality">Hospitality</SelectItem>
+              <SelectItem value="real-estate">Real Estate</SelectItem>
+              <SelectItem value="energy">Energy</SelectItem>
+              <SelectItem value="telecommunications">
+                Telecommunications
+              </SelectItem>
+              <SelectItem value="agriculture">Agriculture</SelectItem>
+              <SelectItem value="media-entertainment">
+                Media & Entertainment
+              </SelectItem>
+              <SelectItem value="transportation-logistics">
+                Transportation & Logistics
+              </SelectItem>
+              <SelectItem value="construction">Construction</SelectItem>
+              <SelectItem value="consulting">Consulting</SelectItem>
+            </SelectContent>
+          </Select>
+
           <div className="my-4">
             <p className="my-4">Do you have business in mainland?</p>
             <Button
@@ -138,7 +178,7 @@ const ValidationPage: React.FC = () => {
               Yes
             </Button>
             <Button onClick={() => handleFreezoneSelection(false)}>No</Button>
-          </div>         
+          </div>
 
           {/* Question for separate books if both are 'Yes' */}
           {formData.is_mainland && formData.is_freezone && (
@@ -163,10 +203,12 @@ const ValidationPage: React.FC = () => {
 
           <DialogFooter>
             {/* Show submit button if conditions are met */}
-            {(formData.is_mainland === true ||
-              formData.is_freezone === true) && (isLoading?<Button onClick={handleSubmit}>Submiting....</Button>:
-              <Button onClick={handleSubmit}>Next</Button>
-            )}
+            {(formData.is_mainland === true || formData.is_freezone === true) &&
+              (isLoading ? (
+                <Button onClick={handleSubmit}>Submiting....</Button>
+              ) : (
+                <Button onClick={handleSubmit}>Next</Button>
+              ))}
           </DialogFooter>
         </DialogContent>
       </Dialog>
