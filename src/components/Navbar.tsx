@@ -50,7 +50,7 @@ export default function Navbar() {
           ) : (
             <div className="flex items-center gap-x-5">
               <Link href='/signin'>
-                <Button>Sign In</Button>
+                <Button>Sign in here</Button>
               </Link>
               <Link href='/register'>
                 <Button variant="secondary">Get Started</Button>

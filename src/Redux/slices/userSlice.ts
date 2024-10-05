@@ -165,6 +165,10 @@ export const userSlice = createSlice({
       localStorage.removeItem("refresh");
     },
 
+    setAuthenticated(state,action:PayloadAction<boolean>){
+      state.is_authenticated = action.payload
+    },
+
     clearError(state) {
       console.log("before clearning error2", state.error);
       state.error = null;
@@ -217,3 +221,5 @@ export const selectLoading = (state: RootState) => state.user.loading;
 export default userSlice.reducer;
 export const { logout } = userSlice.actions;
 export const { clearError } = userSlice.actions;
+export const { setAuthenticated } = userSlice.actions
+
