@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { RootState } from "@/Redux/store";
 import { Oval } from "react-loader-spinner";
+import { jwtDecode } from "jwt-decode";
 
 const page = () => {
   const dispatch = useDispatch();
@@ -43,12 +44,28 @@ const page = () => {
 
 
   const handleLogin = async (e: React.FormEvent) => {
+
     e.preventDefault();
     try {
       await dispatch(loginUser(formData) as any);
-      if (localStorage.getItem("access") && localStorage.getItem("refresh")) {
-        router.push("/dashboard");
+
+      const accessToken = localStorage.getItem("access")
+      const refreshToken = localStorage.getItem("refresh")
+
+      if (accessToken && refreshToken) {
+        const token: string = localStorage.getItem("access") || "";
+        const decoded_token = jwtDecode<{ user_type: string }>(token);
+
+        if (decoded_token.user_type == 'admin_user'){
+          console.log('admin login successful')
+          router.push('/admin/dashboard/')
+        }
+        else{
+          router.push("/dashboard");
+        }
+
       }
+
     } catch (error: any) {
       console.error("Login failed:", error);
       if (error.message && error.message.data && error.message.data.detail) {
