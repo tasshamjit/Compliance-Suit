@@ -16,12 +16,12 @@ import {
 
 export function DropdownMenuDemo() {
   return (
-    // <div className="w-56 max-h-64 overflow-y-auto">
+    <div >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline">Open</Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="w-56 max-h-64 overflow-y-auto overflow-x-visible">
           {/* Assets */}
           <DropdownMenuLabel>Assets</DropdownMenuLabel>
           <DropdownMenuSeparator />
@@ -368,6 +368,6 @@ export function DropdownMenuDemo() {
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-    // </div>
+    </div>
   );
 }
