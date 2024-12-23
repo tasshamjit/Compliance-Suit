@@ -7,16 +7,15 @@ import { Button } from '@/components/ui/button';
 import { jwtDecode } from 'jwt-decode';
 import FilterModal from '@/components/modal/FilterModal';
 import api from '@/services/axios';
+import { ClassificationResult,LedgerClassification } from '@/types/userType';
 
 const categories = ["Asset", "Liability", "Expenses", "Income", "Equity"];
 
-interface ClassificationResult {
-    ledger_name: string;
-    main_classification: string;
-}
+
 
 const UploadPage: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
+    const [ledgerclassification, setLedgerClassifications] =useState<LedgerClassification[]>([])
     const [results, setResults] = useState<ClassificationResult[] | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -94,19 +93,61 @@ const UploadPage: React.FC = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleClassificationChange = (index: number, newClassification: string) => {
-        if (results) {
-            const updatedResults = results.map((item, idx) =>
-                idx === index ? { ...item, classification: newClassification } : item
-            );
-            setResults(updatedResults);
-        }
+    const handleClassificationChange = async (index: number, newClassification: string,ledger_name:string) => {
+        console.log('inside the handle classfication change funciton ')
+        // if (results) {
+        //     const updatedResults = results.map((item, idx) =>
+        //         idx === index ? { ...item, classification: newClassification } : item
+        //     );
+        //     setResults(updatedResults);
+        // }
+        console.log(newClassification,ledger_name)
+        setLedgerClassifications(prev => {
+            // Find if the ledger_name already exists in the array
+            const existingLedger = prev.find(item => item.ledger_name === ledger_name);
+            
+            if (existingLedger) {
+                // If the ledger_name exists, update its classification
+                return prev.map(item =>
+                    item.ledger_name === ledger_name
+                        ? { ...item, classification: newClassification }
+                        : item
+                );
+            } else {
+                // If the ledger_name doesn't exist, add a new entry
+                console.log(ledger_name,newClassification);
+                return [...prev, { ledger_name:ledger_name, classification: newClassification }];
+            }
+        });
+        console.log(ledgerclassification,'thiis is the ledgerclassification list')
     };
+
+    const handleSaveChanges = async() =>{
+        const token: string = localStorage.getItem("access") || "";
+        const decoded_token = jwtDecode<{ sub: number }>(token);
+        console.log('this is the items we are giving to the backend')
+        console.log(ledgerclassification,'this is')
+        try{
+            
+            
+            const response = await api.patch(`/api/classification/update-classification/${decoded_token.sub}/`,
+                
+                // ledger_classification:ledgerclassification
+                [
+                    { 'ledger_name': 'ASSETS', 'classification': 'Cash and Cash Equivalents' },
+                    { 'ledger_name': 'Accounts Receivable', 'classification': 'Due from related parties' }
+                ]
+            );
+            
+        }catch(error){
+            console.log(error)
+        }
+    }
 
     return (
         <div className="upload-page bg-card p-6 shadow-md rounded-lg">
             <h1 className="text-lg font-bold mb-4">Upload Trial Balance</h1>
-            <DropdownMenuDemo />
+            {/* <DropdownMenuDemo onSelectClassification={(classification) => handleClassificationChange(index,classification)}/> */}
             <div className="mb-4">
                 <a 
                     href="/Book2.xlsx" 
@@ -122,9 +163,15 @@ const UploadPage: React.FC = () => {
                 <Button onClick={handleUpload} disabled={isLoading} variant={isLoading ? 'destructive' : 'default'}>
                     {isLoading ? 'Uploading...' : 'Upload'}
                 </Button>
-                <Button onClick={handleEditToggle} variant="secondary">
-                    {isEditing ? 'Save Changes' : 'Edit'}
-                </Button>
+                {
+                    isEditing?
+                    <Button onClick={()=>handleSaveChanges()} variant="secondary">Save changes</Button>
+                    :
+                    <Button onClick={handleEditToggle} variant="secondary">
+                    Edit
+                    </Button>
+                }
+              
             </div>
             {error && <p className="text-destructive">{error}</p>}
             {results && (
@@ -147,9 +194,9 @@ const UploadPage: React.FC = () => {
                                     //         <option key={category} value={category}>{category}</option>
                                     //     ))}
                                     // </select>
-                                    <DropdownMenuDemo/>
+                                    <DropdownMenuDemo  onSelectClassification={(classification) => handleClassificationChange(index, classification,item.ledger_name)}/>
                                 ) : (
-                                    <span> {item.main_classification} </span>
+                                    <span> {item.classification} </span>
                                 )}
                             </li>
                         ))}

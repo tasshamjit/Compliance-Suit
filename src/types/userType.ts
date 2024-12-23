@@ -36,3 +36,14 @@ export interface Users {
     is_blocked: boolean
 
 }
+
+export interface ClassificationResult {
+    ledger_name: string;
+    classification: string;
+    main_classification: string;
+  }
+  
+export interface LedgerClassification {
+    ledger_name: string;
+    classification:string;
+}

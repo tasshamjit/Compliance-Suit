@@ -14,12 +14,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function DropdownMenuDemo() {
-  return (
+export function DropdownMenuDemo({ onSelectClassification }: { onSelectClassification: (classification: string) => void }) {
+
+return (
     <div >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">Open</Button>
+          <Button variant="outline">Choose</Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 max-h-64 overflow-y-auto overflow-x-visible">
           {/* Assets */}
@@ -32,25 +33,25 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Cash and Cash Equivalents")}>
                     <span>Cash and Cash Equivalents</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Trade and other Receivables")}>
                     <span>Trade and other Receivables</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Inventories")}>
                     <span>Inventories</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Prepayments")}>
                     <span>Prepayments</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Financial Assets")}>
                     <span>Financial Assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Due from related parties")}>
                     <span>Due from related parties</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Term Deposits")}>
                     <span>Term Deposits</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -63,40 +64,40 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Term deposits")}>
                     <span>Term deposits</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Property, Plant and Equipment")}>
                     <span>Property, Plant and Equipment</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Intangible Assets")}>
                     <span>Intangible Assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Investment Properties")}>
                     <span>Investment Properties</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Financial assets")}>
                     <span>Financial assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Deferred Tax Assets")}>
                     <span>Deferred Tax Assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Biological Assets")}>
                     <span>Biological Assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Goodwill")}>
                     <span>Goodwill</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Investment in listed entities")}>
                     <span>Investment in listed entities</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Investment in closed entities")}>
                     <span>Investment in closed entities</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Capital work in progress")}>
                     <span>Capital work in progress</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Other investments")}>
                     <span>Other investments</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -114,28 +115,28 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Trade and Other payables")}>
                     <span>Trade and Other payables</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Short-Term Borrowings")}>
                     <span>Short-Term Borrowings</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Current Portion of Long-Term Debt")}>
                     <span>Current Portion of Long-Term Debt</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Provision (short-term)")}>
                     <span>Provision (short-term)</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Deferred Revenue")}>
                     <span>Deferred Revenue</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Current Tax Liabilities")}>
                     <span>Current Tax Liabilities</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Finance lease obligations")}>
                     <span>Finance lease obligations</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Accruals and other credit")}>
                     <span>Accruals and other credit</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -148,22 +149,22 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Long-Term Debt")}>
                     <span>Long-Term Debt</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Employee benefits")}>
                     <span>Employee benefits</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Deferred Tax Liabilities")}>
                     <span>Deferred Tax Liabilities</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Provisions")}>
                     <span>Provisions</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Finance Lease Liabilities")}>
                     <span>Finance Lease Liabilities</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Other Long-Term Liabilities")}>
                     <span>Other Long-Term Liabilities</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -181,25 +182,25 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Ordinary Shares")}>
                     <span>Ordinary Shares</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Preference Shares")}>
                     <span>Preference Shares</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Statutory reserve")}>
               <span>Statutory reserve</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Share Premium")}>
               <span>Share Premium</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Retained Earnings")}>
               <span>Retained Earnings</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Revaluation surplus")}>
               <span>Revaluation surplus</span>
             </DropdownMenuItem>
             <DropdownMenuSub>
@@ -208,19 +209,19 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Translation Reserves")}>
                     <span>Translation Reserves</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Hedging Reserve")}>
                     <span>Hedging Reserve</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Fair Value Reserve")}>
                     <span>Fair Value Reserve</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Non-Controlling Interest")}>
               <span>Non-Controlling Interest</span>
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -235,19 +236,19 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Sales Revenue")}>
                     <span>Sales Revenue</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Service Revenue")}>
                     <span>Service Revenue</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Interest Income")}>
                     <span>Interest Income</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Dividend Income")}>
                     <span>Dividend Income</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Rental Income")}>
                     <span>Rental Income</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -260,16 +261,16 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Gains on Disposal of Assets")}>
                     <span>Gains on Disposal of Assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Investment Gains")}>
                     <span>Investment Gains</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Foreign Exchange Gains")}>
                     <span>Foreign Exchange Gains</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Fair Value Gains")}>
                     <span>Fair Value Gains</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -281,7 +282,7 @@ export function DropdownMenuDemo() {
           <DropdownMenuLabel>Expenses</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Cost of Sales")}>
               <span>Cost of Sales</span>
             </DropdownMenuItem>
 
@@ -291,20 +292,20 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Selling and Distribution Expenses")}>
                     <span>Selling and Distribution Expenses</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("General and Administrative Expenses")}>
                     <span>General and Administrative Expenses</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Research and Development Expenses")}>
                     <span>Research and Development Expenses</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-
-            <DropdownMenuItem>
+            
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Employee Benefit Expenses")}>
               <span>Employee Benefit Expenses</span>
             </DropdownMenuItem>
 
@@ -314,10 +315,10 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Interest Expenses")}>
                     <span>Interest Expenses</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Bank Charges")}>
                     <span>Bank Charges</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
@@ -330,17 +331,17 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Depreciation")}>
                     <span>Depreciation</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Amortization")}>
                     <span>Amortization</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
 
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick= {() =>onSelectClassification("Impairment Losses")}>
               <span>Impairment Losses</span>
             </DropdownMenuItem>
 
@@ -350,16 +351,16 @@ export function DropdownMenuDemo() {
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
                 <DropdownMenuSubContent>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Losses on Disposal of Assets")}>
                     <span>Losses on Disposal of Assets</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Foreign Exchange Losses")}>
                     <span>Foreign Exchange Losses</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Legal and Professional Fees")}>
                     <span>Legal and Professional Fees</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick= {() =>onSelectClassification("Provision Expenses")}>
                     <span>Provision Expenses</span>
                   </DropdownMenuItem>
                 </DropdownMenuSubContent>
